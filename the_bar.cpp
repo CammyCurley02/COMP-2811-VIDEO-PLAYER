@@ -1,5 +1,6 @@
 #include "the_bar.h"
 
+//playback bar class
 void TheBar::update() {
     QProgressBar::setValue(this->seconds/10);
     this->seconds++;
