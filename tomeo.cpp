@@ -98,10 +98,16 @@ int main(int argc, char *argv[]) {
 
 
     QWidget window;
+    
+    //make the background colour a salmon pink for aesthetics
     window.setStyleSheet("background-color: #f5e2df;");
+    
+    //layouts that will contain components
     QHBoxLayout *topH = new QHBoxLayout();
     QVBoxLayout *topV = new QVBoxLayout();
     window.setMinimumSize(720, 960);
+    
+    //portrait and landscape modes
     if (window.height() <= window.width()) {
         window.setLayout(topH);
     }
@@ -120,35 +126,44 @@ int main(int argc, char *argv[]) {
     bar->setTextVisible(false);
     player->setVideoOutput(videoWidget);
 
+    //pause button to pause video playback
     QPushButton* pause = new QPushButton();
     pause->connect(pause, SIGNAL(clicked()), player, SLOT (pause()));
     pause->setIcon(QIcon(":/icons/pause.png"));
     pause->setIconSize(QSize(20,20));
+    
+    //play button to resume video playback
     QPushButton* play = new QPushButton();
     play->connect(play, SIGNAL(clicked()), player, SLOT (play()));
     play->setIcon(QIcon(":/icons/play.png"));
     play->setIconSize(QSize(20,20));
+    
+    //restart button to restart video
     QPushButton* restart = new QPushButton();
     restart->connect(restart, SIGNAL(clicked()), player, SLOT (stop()));
     restart->connect(restart, SIGNAL(clicked()), bar, SLOT (restart()));
     restart->setIcon(QIcon(":/icons/stop.png"));
     restart->setIconSize(QSize(20,20));
 
+    //dropdown of settings options
     QComboBox* settings = new QComboBox();
     QStringList text;
     text << "settings" << "resolution" << "playback speed" << "subtiles";
     settings->addItems(text);
 
+    //adding functionality to buttons
     pause->connect(pause, SIGNAL(clicked()), bar, SLOT (pause()));
     play->connect(play, SIGNAL(clicked()), bar, SLOT (resume()));
 
 
 
+    //comment section so users can upload comments if they wish to
     QTextEdit* commentSection = new QTextEdit();
     commentSection->setPlaceholderText("enter a comment ...");
 
 
 
+    //slider used to control volume
     QLabel* volumeLabel = new QLabel("volume");
     QSlider *volume = new QSlider(Qt::Horizontal);
     volume->setRange(0,100);
@@ -159,6 +174,7 @@ int main(int argc, char *argv[]) {
     volumeWidget->setLayout(volumeHolder);
 
 
+    //adding widgets to a horizontal box layout so everything is neat and symmetrical
     QHBoxLayout* buttonHolder = new QHBoxLayout();
     buttonHolder->addWidget(pause);
     buttonHolder->addWidget(play);
@@ -180,10 +196,13 @@ int main(int argc, char *argv[]) {
     QVBoxLayout *layout = new QVBoxLayout();
     buttonWidget->setLayout(layout);
 
+    //scroll area of thumbnails so can select videos without having to scroll entire page etc
     QScrollArea *thumbArea = new QScrollArea();
     QWidget *buttonsToScrollArea = new QWidget();
     QGridLayout *buttonLayoutGrid = new QGridLayout();
     QVBoxLayout *buttonLayoutVert = new QVBoxLayout();
+    
+    //if portrait mode then display all vertically and if landscape then display more horizontally
     if (window.height() >= window.width()) {
         buttonsToScrollArea->setLayout(buttonLayoutGrid);
     }
@@ -214,7 +233,7 @@ int main(int argc, char *argv[]) {
     thumbArea->setWidget(buttonsToScrollArea);
     thumbArea->horizontalScrollBar()->setEnabled(false);
 
-
+    //adding all components to a single vertical box layout
     QVBoxLayout* vidAndButt = new QVBoxLayout();
     vidAndButt->addWidget(videoWidget);
     vidAndButt->addWidget(bar);
